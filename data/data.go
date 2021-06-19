@@ -40,7 +40,7 @@ func CreateNewAttraction(w http.ResponseWriter, r *http.Request) {
 
 	var a Attraction
 	json.Unmarshal(reqBody, &a)
-	Attractions = append(Attractions, a)
+	Attr = append(Attr, a)
 	json.NewEncoder(w).Encode(a)
 }
 
@@ -52,13 +52,16 @@ func ReturnSingleAttraction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	for _, attraction := range Attractions {
+	fmt.Fprintf(w, "Key: %d", key)
+
+	for _, attraction := range Attr {
 		if attraction.Id == key {
 			json.NewEncoder(w).Encode(attraction)
 		}
 	}
 }
 
+//TODO - is not working. Not updating records.
 func UpdateAttraction(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	x := vars["id"]
@@ -72,13 +75,28 @@ func UpdateAttraction(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	json.Unmarshal(reqBody, &updateEvent)
-	for i, a := range Attractions {
+	for i, a := range Attr {
 		if a.Id == id {
 			a.City = updateEvent.City
 			a.Country = updateEvent.Country
 			a.Name = updateEvent.Name
-			Attractions[i] = a
+			Attr[i] = a
 			json.NewEncoder(w).Encode(a)
+		}
+	}
+}
+
+//TODO - fix, is not working. Specified Attraction remains undeleted
+func DeleteAttraction(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	x := vars["id"]
+	id, err := strconv.Atoi(x)
+	if err != nil {
+		panic(err)
+	}
+	for i, attraction := range Attr {
+		if attraction.Id == id {
+			Attr = append(Attr[:i], Attr[i+1:]...)
 		}
 	}
 }

@@ -17,6 +17,7 @@ func HandleRequests() {
 	r.HandleFunc("/attraction", data.CreateNewAttraction).Methods("POST")
 	r.HandleFunc("/attraction/{id}", data.ReturnSingleAttraction)
 	r.HandleFunc("/attraction/{id}", data.UpdateAttraction).Methods("PUT")
+	r.HandleFunc("/attraction/{id}", data.DeleteAttraction).Methods("DELETE")
 
 	log.Println("Application is running on", addr, "...")
 	log.Println("Using MUX Routers")
