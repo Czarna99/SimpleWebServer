@@ -14,6 +14,7 @@ func HandleRequests() {
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/", data.HomePage)
 	r.HandleFunc("/attractions", data.ReturnAllAtractions)
+	r.HandleFunc("/attraction", data.CreateNewAttraction).Methods("POST")
 
 	log.Println("Application is running on", addr, "...")
 	log.Println("Using MUX Routers")

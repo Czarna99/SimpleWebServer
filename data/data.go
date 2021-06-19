@@ -3,6 +3,7 @@ package data
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -26,4 +27,16 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 func ReturnAllAtractions(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Attr)
+}
+
+func CreateNewAttraction(w http.ResponseWriter, r *http.Request) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var a Attraction
+	json.Unmarshal(reqBody, &a)
+	Attractions = append(Attractions, a)
+	json.NewEncoder(w).Encode(a)
 }
