@@ -1,21 +1,17 @@
 package main
 
 import (
-	"github.com/pawel/attractions/data"
-	"log"
-	"net/http"
+	app "Attractions/SimpleWebServer/application"
+	"Attractions/SimpleWebServer/data"
 )
 
+var Attraction []data.Attraction
+
 func main() {
-	addr := ":8080"
-	http.HandleFunc("/", data.MainPage)
-	http.HandleFunc("/poland", data.Poland)
-	http.HandleFunc("/france", data.France)
+	app.HandleRequests()
+	Attraction = []data.Attraction{
+		data.Attraction{Id: 1, Name: "Eiffel Tower", City: "Paris", Country: "France"},
+		data.Attraction{Id: 2, Name: "Tower", City: "London", Country: "Great Britan"},
+	}
 
-	log.Println("Application is running on localhost:8080....")
-	log.Fatal (http.ListenAndServe(addr, nil))
 }
-
-
-
-

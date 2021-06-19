@@ -1,48 +1,29 @@
 package data
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
-type City struct {
-	Name string
-}
-
 type Attraction struct {
-	Name string
-	City
-	Country
+	Id      int    `json:"id"`
+	Name    string `json:"attraction_name"`
+	City    string `json:"city_name"`
+	Country string `json:"country_name"`
 }
 
-type Country struct {
-	Name string
-}
-//MainPage - main page of the website
-func MainPage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "This is a main page")
+var Attr = []Attraction{
+	Attraction{Id: 1, Name: "Eiffel Tower", City: "Paris", Country: "France"},
+	Attraction{Id: 2, Name: "Tower", City: "London", Country: "Great Britan"},
 }
 
-//Poland - Displays in web browser country, city and attraction in it.
-func Poland(w http.ResponseWriter, r *http.Request) {
-	var d Attraction
-	d.Country.Name = "Poland"
-	d.City.Name = "Warsaw"
-	d.Name = "Chopin Statue"
+var Attractions []Attraction
 
-	fmt.Fprintf(w, "Country: %s \n", d.Country.Name)
-	fmt.Fprintf(w, "City: %s \n", d.City.Name)
-	fmt.Fprintf(w, "Attraction: %s \n", d.Name)
-
-}
-//France - Displays in web browser country, city and attraction in it.
-func France(w http.ResponseWriter, r *http.Request) {
-	var d Attraction
-	d.Country.Name = "France"
-	d.City.Name = "Paris"
-	d.Name = "Eiffel Tower"
-	fmt.Fprintf(w, "Country: %s \n", d.Country.Name)
-	fmt.Fprintf(w, "City: %s \n", d.City.Name)
-	fmt.Fprintf(w, "Attraction: %s \n", d.Name)
+func HomePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome on the HomePage!")
 }
 
+func ReturnAllAtractions(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(Attr)
+}

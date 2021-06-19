@@ -1,0 +1,21 @@
+package app
+
+import (
+	"Attractions/SimpleWebServer/data"
+	"log"
+	"net/http"
+
+	"github.com/gorilla/mux"
+)
+
+var addr = ":8080"
+
+func HandleRequests() {
+	r := mux.NewRouter().StrictSlash(true)
+	r.HandleFunc("/", data.HomePage)
+	r.HandleFunc("/attractions", data.ReturnAllAtractions)
+
+	log.Println("Application is running on", addr, "...")
+	log.Println("Using MUX Routers")
+	log.Fatal(http.ListenAndServe(addr, r))
+}
